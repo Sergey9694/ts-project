@@ -1,9 +1,9 @@
-import { FC, useState } from "react";
+import { FC, useRef, useState } from "react";
 
 const EventsExample: FC = () => {
     const [value, setValue] = useState<string>("");
-
     const [isDrag, setIsDrag] = useState<boolean>(false); // тру -занесли в квадрат, false - вышли за пределы
+    const inputRef = useRef<HTMLInputElement>(null);
 
     // типизация onChange
     const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -12,7 +12,8 @@ const EventsExample: FC = () => {
 
     // типизация onClick
     const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-        console.log(value);
+        // console.log(value);
+        console.log(inputRef.current?.value);
     };
     // начало перемещения эл-та
     const dragHandler = (e: React.DragEvent<HTMLDivElement>) => {
@@ -37,7 +38,13 @@ const EventsExample: FC = () => {
 
     return (
         <div>
-            <input value={value} onChange={changeHandler} type="text" />
+            <input
+                value={value}
+                onChange={changeHandler}
+                type="text"
+                placeholder="Управляемый"
+            />
+            <input ref={inputRef} type="text" placeholder="Неуправляемый" />
             <button onClick={clickHandler}>Нажми</button>
             <div
                 onDrag={dragHandler}
